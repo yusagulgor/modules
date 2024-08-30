@@ -31,7 +31,7 @@ interface Footer {
 
 interface Page {
   name: string;
-  elements: Card[];
+  elements: (Card | Text)[];
 }
 
 interface WebData {
@@ -45,7 +45,7 @@ interface WebData {
 fetch('http://localhost:5000/api/data')
   .then(response => response.json())
   .then((data: WebData) => {
-    // Dinamik rotaları oluşturun
+
     data.pages.forEach((page) => {
       app.get(`/${page.name}`, (req, res) => {
         res.send(`
@@ -62,8 +62,8 @@ fetch('http://localhost:5000/api/data')
                 .card {
                   padding: 20px;
                   margin: 20px;
-                  border-radius: ${page.elements[0]?.border_radius}px;
-                  background-color: ${page.elements[0]?.bgColor};
+                  border-radius: ${page.elements[0] && 'border_radius' in page.elements[0] ? (page.elements[0] as Card).border_radius : 0}px;
+                  background-color: ${page.elements[0] && 'bgColor' in page.elements[0] ? (page.elements[0] as Card).bgColor : 'transparent'};
                   display: flex;
                   flex-wrap: wrap;
                   gap: 10px; /* Card içindeki elemanlar arasında boşluk */
@@ -71,27 +71,27 @@ fetch('http://localhost:5000/api/data')
 
                 .card.single {
                   justify-content: center;
-                  width: ${page.elements[0]?.wh[0]}px;
-                  height: ${page.elements[0]?.wh[1]}px;
+                  width: ${page.elements[0] && 'wh' in page.elements[0] ? (page.elements[0] as Card).wh[0] : 100}px;
+                  height: ${page.elements[0] && 'wh' in page.elements[0] ? (page.elements[0] as Card).wh[1] : 100}px;
                 }
 
                 .card.double {
                   justify-content: space-between;
-                  width: ${page.elements[0]?.wh[0]}px;
-                  height: ${page.elements[0]?.wh[1]}px;
+                  width: ${page.elements[0] && 'wh' in page.elements[0] ? (page.elements[0] as Card).wh[0] : 100}px;
+                  height: ${page.elements[0] && 'wh' in page.elements[0] ? (page.elements[0] as Card).wh[1] : 100}px;
                 }
 
                 .card.triple-four {
                   display: grid;
                   grid-template-rows: repeat(2, 1fr);
                   grid-template-columns: repeat(2, 1fr);
-                  width: ${page.elements[0]?.wh[0]}px;
-                  height: ${page.elements[0]?.wh[1]}px;
+                  width: ${page.elements[0] && 'wh' in page.elements[0] ? (page.elements[0] as Card).wh[0] : 100}px;
+                  height: ${page.elements[0] && 'wh' in page.elements[0] ? (page.elements[0] as Card).wh[1] : 100}px;
                   gap: 10px; /* Grid içindeki elemanlar arasında boşluk */
                 }
 
                 .card a, .card p, .card h3 {
-                  color: ${page.elements[0]?.texts[0]?.color};
+                  color: ${page.elements[0] && 'texts' in page.elements[0] && page.elements[0].texts.length > 0 ? (page.elements[0] as Card).texts[0]?.color : '#000'};
                   display: inline-block; /* Her öğeyi blok yaparak hizalamayı düzeltiyoruz */
                   margin: 0; /* Varsayılan margin değerlerini sıfırlıyoruz */
                 }
@@ -109,23 +109,29 @@ fetch('http://localhost:5000/api/data')
                 </ul>
               </nav>
               <h1>${page.name}</h1>
-              ${page.elements.map((element) => `
-                <div class="card ${element.texts.length === 1 ? 'single' : 
-                  element.texts.length === 2 ? 'double' : 
-                  'triple-four'}">
-                  ${element.texts.map(text => {
-                    switch (text.type) {
-                      case 'a':
-                        return `<a href="${text.text}" style="color:${text.color};">${text.text}</a>`;
-                      case 'h3':
-                        return `<h3 style="color:${text.color};">${text.text}</h3>`;
-                      case 'p':
-                      default:
-                        return `<p style="color:${text.color};">${text.text}</p>`;
-                    }
-                  }).join('')}
-                </div>
-              `).join('')}
+              ${page.elements.map((element) => {
+                if ('texts' in element) {
+                  return `
+                    <div class="card ${element.texts.length === 1 ? 'single' : 
+                      element.texts.length === 2 ? 'double' : 
+                      'triple-four'}">
+                      ${element.texts.map(text => {
+                        switch (text.type) {
+                          case 'a':
+                            return `<a href="${text.text}" style="color:${text.color};">${text.text}</a>`;
+                          case 'h3':
+                            return `<h3 style="color:${text.color};">${text.text}</h3>`;
+                          case 'p':
+                          default:
+                            return `<p style="color:${text.color};">${text.text}</p>`;
+                        }
+                      }).join('')}
+                    </div>
+                  `;
+                } else {
+                  return `<p style="color:${element.color};">${element.text}</p>`;
+                }
+              }).join('')}
               <footer>
                 <p>${data.footer.text.text}</p>
               </footer>

@@ -44,7 +44,7 @@ testFooter = Footer(Colors.GRAY,testP)
 
 # * PAGES -------------------------------------
 
-testPageHEList1 = [testCard]
+testPageHEList1 = [testCard,testP]
 testPageHEList2 = [testCard2]
 
 testPage1 = Page("test",testPageHEList1)

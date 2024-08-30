@@ -31,10 +31,7 @@ class Colour(Enum):
 class RWebDev(Module):
 
     """ 
-        
-        if you want use this or all web models , you should write "cd src/models" in terminal/powershell . 
 
-        And should write "npx ts-node web.ts" . 
         if you can't have nodejs. You must be have a error .
         You must install it from https://nodejs.org/.
 
@@ -82,17 +79,15 @@ class RWebDev(Module):
         
         import subprocess ,time,os
         command = ["npx", "ts-node", "web.ts"]
-        # Python dosyasının bulunduğu dizini al
+
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
-        # İlgili dizine geç
         target_dir = os.path.join(current_dir)
         os.chdir(target_dir)
         
         time.sleep(3)
         subprocess.Popen(command,shell=True)
 
-        # Flask sunucusunu başlat
         self.app.run(host=host, port=8000, debug=debug, load_dotenv=load_dotenv, **options)
 
 # * ReadyWeb Modules
