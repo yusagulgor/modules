@@ -30,6 +30,8 @@ testCard2 = Card(RCards.STATE,
                 wh=[300,200],border_radius=25,
                 bgColor=Colors.RED,texts=testCardList2)
 
+# ! FYT not yet supported
+
 # testCardFYT = Card(RCards.CUSTOM, "border-radius:25,width:200,height:300,background-color:red,metinLen:2,metin1:Hi,metin2:Hii")
 
 # print(testCardFYT.fyt)

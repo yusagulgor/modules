@@ -11,28 +11,28 @@ from modules import *
 
 # * GEHUB Modules
 
-# pPath = ""
-# rPath = ""
-# bName = "main"
-# commitMessage = "ilk komit"
+pPath = "C:\\Users\\Yusa\\Desktop\\codes\\npms\\anyTs\\src\\unknow"
+rPath = "https://github.com/yusagulgor/Unknow.git"
+bName = "main"
+commitMessage = "first commit"
 
-# readmeText = """ """
+readmeText = """ """
 
 
-# git = Gethub("hi", pPath, rPath, bName, commitMessage, dwReMD=False)
-# doc = Decker(build=False)
-# ghub = GEHUB(git, doc)
+git = Gethub("Unknown", pPath, rPath, bName, commitMessage, dwReMD=False)
+doc = Decker(build=False)
+ghub = GEHUB(git, doc)
 
 
 # * WEB Modules
 # param = [("/","Testhome.html"),("/about","Testabout.html")]
 # webM = WebM("test",param)
-web = RWebDev("myWeb",Colour.GREEN,Colour.RED,["hi","sad","hola"],["hi Homun","sad,Doorun","hola Evin"])
-readyWeb = ReadyWebs("readyWeb",YourReadyWebModels.BasicCustom,web)
+# web = RWebDev("myWeb",Colour.GREEN,Colour.RED,["hi","sad","hola"],["hi Homun","sad,Doorun","hola Evin"])
+# readyWeb = ReadyWebs("readyWeb",YourReadyWebModels.BasicCustom,web)
 
 # * Automation Modules
 
-# * AI Modules
+# * AI Modules 
 
 # deep = DeepLM()
 # Rdeep = RDeepLM()
@@ -45,9 +45,8 @@ if __name__ == "__main__":
 
     # * Usage
     
-    # ghub.pushRepo()
+    ghub.pushRepo()
     # webM.run(debug=True)
     # web.run(debug=True)
     # readyWeb.run(debug=True)
-
-    web.run(debug=True)
+    # web.run(debug=True)

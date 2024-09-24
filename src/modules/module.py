@@ -27,22 +27,30 @@ class Module(object):
 
 # * Gehub Modules  
 
+import os
+import subprocess
+
 class Gethub(Module):
-    
     """
     # Usage
-    pls click to class and read the doc
+    Please click on the class and read the doc.
 
-    pPath must be like this , "x:\\examples\\..." The important thing here is to double
-    rPath: GitHub repository URL'si
-    your_branchName: Git dalı adı
-    commitMessage: İlk commit mesajı
-    dwReMD: README.md dosyasının oluşturulup oluşturulmayacağını belirler
-    ReMDMessage: README.md içeriği
-    
+    pPath must be like this: "x:\\examples\\..." The important thing here is to double \
+    backslashes.
+
+    rPath: GitHub repository URL.
+
+    your_branchName: Git branch name.
+
+    commitMessage: First commit message.
+
+    dwReMD: Indicates whether to create README.md.
+
+    ReMDMessage: Content of README.md.
     """
 
-    def __init__(self, pName: str, pPath: str, rPath: str, your_branchName: str, commitMessage: str, dwReMD: bool = False, ReMDMessage: str = None) -> None:
+    def __init__(self, pName: str, pPath: str, rPath: str, your_branchName: str, 
+                 commitMessage: str, dwReMD: bool = False, ReMDMessage: str = None) -> None:
         super().__init__("Gethub")
         self.pName = pName
         self.pPath = pPath
@@ -50,62 +58,53 @@ class Gethub(Module):
         self.y_bN = your_branchName
         self.cm = commitMessage
         self.dwMD = dwReMD
-        self.mdMessage = ReMDMessage
+        self.mdMessage = ReMDMessage or self._default_readme()
 
-        if self.dwMD and self.mdMessage is None:
-            self.mdMessage = f"""
-# {self.pName} project
-
-hello to my {self.pName}
-
-"""
-        elif not self.dwMD and self.mdMessage is not None:
-            self.mdMessage = None
-        else:
-            print("always okey")
-
-    def GetpName(self): return self.pName
-    def GetpPath(self): return self.pPath
-    def GetrPath(self): return self.rPath
-    def GetybName(self): return self.y_bN
-    def GetCM(self): return self.cm
-    def GetDWMD(self): return self.dwMD
-    def GetMDmessage(self): return self.mdMessage
+    def _default_readme(self):
+        return f"# {self.pName} project\n\nHello to my {self.pName}\n"
 
     def addRM(self):
-        if self.dwMD and self.mdMessage:
-            with open(os.path.join(self.pPath, 'README.md'), 'w') as f:
-                f.write(self.mdMessage)
+        if self.dwMD:
+            try:
+                with open(os.path.join(self.pPath, 'README.md'), 'w') as f:
+                    f.write(self.mdMessage)
+            except Exception as e:
+                print(f"README.md oluşturulurken hata: {e}")
 
     def initialize_git_repo(self):
-        if not os.path.exists(self.pPath):
+        try:
             os.makedirs(self.pPath, exist_ok=True)
-        
-        os.system(f"git init {self.pPath}")
-        self.addRM()
-        os.system(f"git -C {self.pPath} add .")
-        os.system(f'git -C {self.pPath} commit -m "{self.cm}"')
-        os.system(f"git -C {self.pPath} branch -M {self.y_bN}")
-        os.system(f"git -C {self.pPath} remote add origin {self.rPath}")
-        os.system(f"git -C {self.pPath} push -u origin {self.y_bN}")
+            subprocess.run(f"git init {self.pPath}", check=True)
+            self.addRM()
+            subprocess.run(f"git -C {self.pPath} add .", check=True)
+            subprocess.run(f'git -C {self.pPath} commit -m "{self.cm}"', check=True)
+            subprocess.run(f"git -C {self.pPath} branch -M {self.y_bN}", check=True)
+            subprocess.run(f"git -C {self.pPath} remote add origin {self.rPath}", check=True)
+            subprocess.run(f"git -C {self.pPath} push -u origin {self.y_bN}", check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Git işlemi başarısız oldu: {e}")
+        except Exception as e:
+            print(f"Bir hata oluştu: {e}")
 
 # -----------------------------------------------------------------------
 
 class Decker(Module):
-
-    def __init__(self, build: bool = False,image_name: str = "myapp:latest") -> None:
+    def __init__(self, build: bool = False, image_name: str = "myapp:latest") -> None:
         super().__init__("Decker")
         self.build = build
         self.image_name = image_name
 
     def build_image(self):
-            os.system(f"docker build -t {self.image_name} .")
+        try:
+            subprocess.run(f"docker build -t {self.image_name} .", check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Docker imajı oluşturulurken hata: {e}")
 
     def GetDW(self):
         return self.build
 
 # -----------------------------------------------------------------------    
-    
+
 class GEHUB(Module):
     def __init__(self, github: Gethub, docker: Decker) -> None:
         super().__init__("Gehub")
@@ -113,31 +112,33 @@ class GEHUB(Module):
         self.dk = docker
 
     def pushRepo(self):
-        if not self.dk.GetDW():
-            self.gh.initialize_git_repo()
-        else:
-            try:
-                self.dk.build_image()    
+        try:
+            if not self.dk.GetDW():
                 self.gh.initialize_git_repo()
-            except Exception as e:
-                print(e)    
-            else:    
-                print("Git işlemleri tamamlandı.")
+            else:
+                self.dk.build_image()
+                self.gh.initialize_git_repo()
+            print("Git işlemleri tamamlandı.")
+        except Exception as e:
+            print(f"GEHUB işlemi sırasında hata: {e}")
 
+    @staticmethod
     def fcodef(name: str):
-        with open(name+".py", 'w') as f:
-            f.write("from modules import *\n\n")
-            f.write("name = '' \n")
-            f.write("projePath = 'C:\\example\\...' \n")
-            f.write("repoPath = 'https://github.com/userName/example.git' \n")
-            f.write("branchName = '' \n")
-            f.write("commitMessage = 'first commit' \n")
-            f.write("readmeText = '' \n\n")
-
-            f.write("git = Github(name,projePath,repoPath,branchName,commitMessage,ReMDMessage=readmeText)\n")
-            f.write("doc = Docker(False)\n")
-            f.write("ghub = GEHUB(git,doc)\n")
-            f.write("ghub.pushRepo()\n")  
+        try:
+            with open(name + ".py", 'w') as f:
+                f.write("from modules import *\n\n")
+                f.write("name = ''\n")
+                f.write("projePath = 'C:\\example\\...'\n")
+                f.write("repoPath = 'https://github.com/userName/example.git'\n")
+                f.write("branchName = ''\n")
+                f.write("commitMessage = 'first commit'\n")
+                f.write("readmeText = ''\n\n")
+                f.write("git = Gethub(name, projePath, repoPath, branchName, commitMessage, ReMDMessage=readmeText)\n")
+                f.write("doc = Decker(False)\n")
+                f.write("ghub = GEHUB(git, doc)\n")
+                f.write("ghub.pushRepo()\n")
+        except Exception as e:
+            print(f"{name}.py dosyası oluşturulurken hata: {e}")
 
 # * Web Modules
 
