@@ -11,7 +11,7 @@ from modules import *
 
 # * GEHUB Modules
 
-pPath = "C:\\Users\\Yusa\\Desktop\\codes\\npms\\anyTs\\src\\unknow"
+pPath = ""
 rPath = "https://github.com/yusagulgor/Unknow.git"
 bName = "main"
 commitMessage = "first commit"
