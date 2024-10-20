@@ -11,17 +11,17 @@ from modules import *
 
 # * GEHUB Modules
 
-pPath = "C:\\Users\\Yusa\\Desktop\\codes\\npms\\anyTs\\src\\unknow"
-rPath = "https://github.com/yusagulgor/Unknow.git"
-bName = "main"
-commitMessage = "first commit"
+# pPath = "C:\\Users\\Yusa\\Desktop\\codes\\npms\\anyTs\\src\\unknow"
+# rPath = "https://github.com/yusagulgor/Unknow.git"
+# bName = "main"
+# commitMessage = "first commit"
 
-readmeText = """ """
+# readmeText = """ """
 
 
-git = Gethub("Unknown", pPath, rPath, bName, commitMessage, dwReMD=False)
-doc = Decker(build=False)
-ghub = GEHUB(git, doc)
+# git = Gethub("Unknown", pPath, rPath, bName, commitMessage, dwReMD=False)
+# doc = Decker(build=False)
+# ghub = GEHUB(git, doc)
 
 
 # * WEB Modules
@@ -45,8 +45,9 @@ if __name__ == "__main__":
 
     # * Usage
     
-    ghub.pushRepo()
+    # ghub.pushRepo()
     # webM.run(debug=True)
     # web.run(debug=True)
     # readyWeb.run(debug=True)
     # web.run(debug=True)
+    print("hi")

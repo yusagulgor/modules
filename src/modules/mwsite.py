@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from enum import StrEnum
 from flask import Flask, jsonify
 from .module import Module
@@ -21,10 +22,9 @@ class TextT(StrEnum):
     TITLE = "h3"
     LINK = "a"     
 
-class HE:
-    def __init__(self) -> None:
-        pass
-
+class HE(ABC):
+    def __init__(self) -> None:pass
+    @abstractmethod
     def to_dict(self):pass
 
 class Text(HE):
@@ -63,7 +63,6 @@ class Card(HE):
             raise ValueError("Width and height must be provided as a list of two integers.")
 
     def to_dict(self):
-        # Ensure all elements in self.texts are instances of Text
         if not all(isinstance(text, Text) for text in self.texts):
             raise TypeError("All elements in texts must be instances of Text.")
         

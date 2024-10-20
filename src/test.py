@@ -1,83 +1,53 @@
+
 from modules import *
-# * Test Page
-testRouteLink = Text(TextT.LINK,
-                     Colors.GREEN,"test")
-testRouteLink2 = Text(TextT.LINK,
-                      Colors.GREEN,"test2")
+import numpy as np
 
-testL = Text(TextT.LINK,
-             Colors.GREEN,
-             "link")
+print(differences)
 
-testP = Text(TextT.PARAGRAPH,
-             Colors.GREEN,
-             "hi")
+"""
 
-testT = Text(TextT.TITLE,
-             Colors.GREEN,
-             "Title")
+Test aşaması . Çalışıyor mu diye deneniyor.
 
-# * CARDS -------------------------------------
-testCardList1 = [testP]
-testCardList2 = [testP,testL,testP,testL]
+"""
 
-testCard = Card(RCards.STATE,
-                wh=[200,100],border_radius=25,
-                bgColor=Colors.BLACK,texts=testCardList1)
-# print(testCard.to_dict())
+# !Graphplotter is okey
 
-testCard2 = Card(RCards.STATE,
-                wh=[300,200],border_radius=25,
-                bgColor=Colors.RED,texts=testCardList2)
+# def f(x: int) -> float:
+#     return x**2
 
-# ! FYT not yet supported
+# def g(x: int) -> float:
+#     return x**2 + 2
 
-# testCardFYT = Card(RCards.CUSTOM, "border-radius:25,width:200,height:300,background-color:red,metinLen:2,metin1:Hi,metin2:Hii")
+# def h(x: int) -> float:
+#     return x + 1
 
-# print(testCardFYT.fyt)
+# def f_3D(u: float, v: float) -> float:
+#     return np.sin(u)
 
-# * COMPONENTS -------------------------------------
+# def g_3D(u: float, v: float) -> float:
+#     return np.cos(v)
 
-testNavbarList = [testRouteLink,testRouteLink2]
-testNavbar = Navbar(Colors.BLUE,testNavbarList)
-testFooter = Footer(Colors.GRAY,testP)
-# print(testNavbar)
-# print(testFooter.to_dict())
-
-# * PAGES -------------------------------------
-
-testPageHEList1 = [testCard,testP]
-testPageHEList2 = [testCard2]
-
-testPage1 = Page("test",testPageHEList1)
-testPage2 = Page("test2",testPageHEList2)
-testPageList = [testPage1,testPage2]
-
-testWD = WD("test",testNavbar,testFooter,testPageList)
-# print(testPage1.to_dict())
-
-testWD.run()
+# def h_3D(u: float, v: float) -> float:
+#     return u + v
 
 
-# ? -----------------------------------------------------
+# plotter = GraphPlotter()
+# dimension = int(input("Lütfen grafik boyutunu seçin (2D için 2, 3D için 3): "))
+# # * Ex usage
+# if dimension == 2:
+#     plotter.plot_2D([f])
+# elif dimension == 3:
+#     plotter.plot_3D([f_3D, g_3D, h_3D])
+# else:
+#     print("Geçersiz boyut seçimi.")
 
-# # * Proje Page
+# !ÇALIŞIYOR Const
 
-# proje= Page("proje")
+# class Constant(Const):
+#     NAME = "Yusa"
 
-# # * Home Page
 
-# home = Page("home")
+# Constant().NAME = "Hayır" # ?Error
 
-# -----------------------------------------------------
-
-# click = Text()
-
-# card = Card()
-
-# footerText = Text(TextT.PARAGRAPH,Colors.WHITE,"owned")
-# navbar = Navbar(Colors.BLUE)
-# footer = Footer(Colors.WHITE)s
-
-# pageList = list[home]
-# WD("firstTry",navbar,footer,)
+# name = Constant().NAME # ?have TypeError 
+# print(name)
