@@ -368,7 +368,7 @@ class Const(object,metaclass=MetaConst):
 
     Example:
     sınıf tanımı
-    >>> class Constant(Const):pass
+    >>> class Constant(Const):
     >>>     NAME = "Yusa"
     Final yani değiştirilemeyen değer NAME
 
