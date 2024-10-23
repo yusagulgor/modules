@@ -1,6 +1,6 @@
 """
 (Yüşa Gülgör)
-2024y05m01d 
+2024y10m23d 
 
 
 """
@@ -9,9 +9,12 @@ from .module import *
 from .readyModules import *
 from .mwsite import *
 
-differences = Var(str,"""Kullanabileceğiniz araçlar:
+class Dir(Const):
+    differences = Var(str,"""Kullanabileceğiniz araçlar:
 WebM,AutomationM,MachineLM,DeepLM,LossFunction,Gethub,Decker,GEHUB,Bin,UInt,Var,Const,GraphPlotter,web build with WD,YourReadyWebModels,RWebDev,ReadyWebs.
 """,False)
+    
+dif = Dir().differences    
 
 equals = __name__ == "__main__" 
 ro = equals == True
