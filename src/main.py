@@ -9,10 +9,12 @@
 from modules import *
 # * Modules
 
+
+
 # * GEHUB Modules
 
-# pPath = "C:\\Users\\Yusa\\Desktop\\codes\\npms\\anyTs\\src\\unknow"
-# rPath = "https://github.com/yusagulgor/Unknow.git"
+# pPath = "C:\\Users\\unknow" # ? Ex
+# rPath = ""
 # bName = "main"
 # commitMessage = "first commit"
 
@@ -32,14 +34,6 @@ from modules import *
 
 # * Automation Modules
 
-# * AI Modules 
-
-# deep = DeepLM()
-# Rdeep = RDeepLM()
-# ydeep = YDeepModels("aliye")
-
-# machineModels = MachineLM()
-
 
 if __name__ == "__main__":
 
@@ -50,4 +44,4 @@ if __name__ == "__main__":
     # web.run(debug=True)
     # readyWeb.run(debug=True)
     # web.run(debug=True)
-    print("hi")
+    print(dif)

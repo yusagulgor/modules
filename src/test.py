@@ -2,7 +2,7 @@
 from modules import *
 import numpy as np
 
-print(differences)
+print(dif)
 
 """
 

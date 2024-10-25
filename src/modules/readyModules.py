@@ -104,55 +104,7 @@ class ReadyWebs(RWebDev):
     def run(self, host: str | None = None, debug: bool | None = None, load_dotenv: bool = True, **options:Any) -> None:
         super().run(host,debug,load_dotenv,self.__modelname,**options)        
 
-# * Ready build DeepLearning Modules
-
-import torch
-import numpy as np
-from torch.nn import Module as Md
-
-class RDeepLM(DeepLM):
-    def __init__(self, name: str, input_size: int, output_size: int, loss_function: LossFunction = LossFunction.MSE_LOSS,
-                 num_epochs: int = 10, learning_rate: float = 0.001) -> None:
-        super().__init__(name, input_size, output_size, loss_function, num_epochs, learning_rate)
-
-    def train_and_save_model(self, X_train: np.ndarray, y_train: np.ndarray, save_path: str = None) -> None:
-        # Train the model
-        self.train_model(X_train, y_train)
-
-        # Save the model
-        if save_path:
-            model_path = f"{save_path}/{self.name}.pth"
-        else:
-            model_path = f"{self.name}.pth"
-        torch.save(self.model.state_dict(), model_path)
-
-        print(f"Model saved to {model_path}")
-
-# * Ready DeepLearning Modules
-
-class RDeepModels(Enum):
-    CAT_DOG = "cat_dog.pth" # ! Not yet
-    NUMBER = "number.pth" # ! Not yet
-
-class YDeepModels(Module):
-    """
-    Example Usage:
-    ---------------
-    catdog_models = YDeepModels(name="my_models")
-    catdog_models.load_model(RDeepModels.CAT_DOG)
-
-    """
-    def __init__(self, name: str) -> None:
-        super().__init__(name)
-        self.name = name
-
-    def load_model(self, model: RDeepModels) -> Md:
-        return torch.load(model)
-
 __all__ = ["Colour",
            "YourReadyWebModels",
            "RWebDev",
-           "ReadyWebs",
-           "RDeepLM",
-           "YDeepModels",
-           "RDeepModels"]
+           "ReadyWebs"]

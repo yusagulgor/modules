@@ -5,4 +5,4 @@
 pip install -r requirements.txt
 
 # Uygulamanın çalıştırılması
-python app.py
+python src/main.py

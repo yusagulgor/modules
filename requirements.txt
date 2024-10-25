@@ -1,4 +1,3 @@
-torch
+
 Flask
 selenium
-scikit-learn
