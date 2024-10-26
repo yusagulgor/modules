@@ -4,7 +4,7 @@
 2024y05m01d
 
 """
-
+from colorama import Fore
 from enum import Enum
 from typing import Any, List
 from .module import *
@@ -102,6 +102,9 @@ class ReadyWebs(RWebDev):
         self.__modelname:YourReadyWebModels = yourModel
 
     def run(self, host: str | None = None, debug: bool | None = None, load_dotenv: bool = True, **options:Any) -> None:
+        print(Fore.RED+"you should wait last this sentence :")
+        print(Fore.BLUE+f"After the statusCode: 200 \nServer is running at http://localhost:8000/{self.__modelname.value}")
+        print(Fore.GREEN)
         super().run(host,debug,load_dotenv,self.__modelname,**options)        
 
 __all__ = ["Colour",
