@@ -31,7 +31,7 @@ Test aşaması . Çalışıyor mu diye deneniyor.
 #     return u + v
 
 
-# plotter = GraphPlotter()
+plotter = GraphPlotter()
 # dimension = int(input("Lütfen grafik boyutunu seçin (2D için 2, 3D için 3): "))
 # # * Ex usage
 # if dimension == 2:
@@ -40,6 +40,19 @@ Test aşaması . Çalışıyor mu diye deneniyor.
 #     plotter.plot_3D([f_3D, g_3D, h_3D])
 # else:
 #     print("Geçersiz boyut seçimi.")
+
+point1 = Point(2, 3)
+point2 = Point(4, 1)
+
+# Vektör ekleme
+graph_plotter = GraphPlotter()
+graph_plotter.vector_addition(point1, point2)
+
+# Skaler çarpma
+graph_plotter.scalar_multiplication(point1, 3)
+
+# İç çarpım
+graph_plotter.dot_product(point1, point2)
 
 # !ÇALIŞIYOR Const
 

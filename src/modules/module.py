@@ -254,7 +254,6 @@ class Bin:
     def __le__(self, other):
         return self.value <= other
 
-
 class Var:
     
     """
@@ -425,13 +424,42 @@ class WebM(Module):
 
 # * Graphplotter
 
+class Point:
+    def __init__(self, x: float, y: float):
+        self.x = x
+        self.y = y
+
+    def __call__(self):
+        return self.x,self.y
+
+    def __repr__(self):
+        return f"Point({self.x}, {self.y})"
+    
+# Var.addType(Point)    
+
+class VectorOperations:
+    @staticmethod
+    def add(v1: Point, v2: Point) -> Point:
+        """İki vektörün bileşenlerinin toplamını alarak yeni bir vektör döndürür."""
+        return Point(v1.x + v2.x, v1.y + v2.y)
+
+    @staticmethod
+    def scalar_multiply(v: Point, scalar: float) -> Point:
+        """Bir vektörü bir skalerle çarpar."""
+        return Point(v.x * scalar, v.y * scalar)
+
+    @staticmethod
+    def dot_product(v1: Point, v2: Point) -> float:
+        """İki vektörün iç çarpımını hesaplar."""
+        return v1.x * v2.x + v1.y * v2.y
+
 class GraphPlotter(Module):
     def __init__(self):
-        super().__init__("Graphplotter")
+        super().__init__("GraphPlotter")
+        self.vector_ops = VectorOperations()
 
     """
     For the 2/3D graph
-
     """
     
     def plot_2D(self, funcs: List[Callable[[int], float]]):
@@ -474,6 +502,41 @@ class GraphPlotter(Module):
         ax.set_ylabel("Y")
         ax.set_zlabel("Z")
         plt.show()
+    
+    def plot_vector(self, point1: Point, point2: Point):
+        """Verilen iki nokta arasındaki vektörü çizen fonksiyon."""
+        # Başlangıç ve bitiş noktalarını al
+        x_values = [point1.x, point2.x]
+        y_values = [point1.y, point2.y]
+
+        # Grafik oluştur
+        plt.figure()
+        plt.quiver(point1.x, point1.y, point2.x - point1.x, point2.y - point1.y, angles='xy', scale_units='xy', scale=1, color="r")
+        plt.xlim(min(x_values) - 1, max(x_values) + 1)
+        plt.ylim(min(y_values) - 1, max(y_values) + 1)
+        plt.title("Vektör Grafiği")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.grid(True)
+        plt.show()
+    
+    def vector_addition(self, point1: Point, point2: Point):
+        """İki vektörün toplanmasını ve sonucunun görselleştirilmesini sağlar."""
+        result = self.vector_ops.add(point1, point2)
+        print(f"Vektörlerin toplamı: {result}")
+        self.plot_vector(point1, point2)
+        self.plot_vector(Point(0, 0), result)
+    
+    def scalar_multiplication(self, point: Point, scalar: float):
+        """Bir vektörü skalerle çarpar ve sonucunu görselleştirir."""
+        result = self.vector_ops.scalar_multiply(point, scalar)
+        print(f"Vektörün {scalar} ile çarpımı: {result}")
+        self.plot_vector(Point(0, 0), result)
+    
+    def dot_product(self, point1: Point, point2: Point):
+        """İki vektörün iç çarpımını hesaplar ve sonucu yazdırır."""
+        result = self.vector_ops.dot_product(point1, point2)
+        print(f"Vektörlerin iç çarpımı: {result}")
 
 
 # * Automation Modules  
@@ -547,4 +610,5 @@ __all__ = ["Module",
            "UInt",
            "Var",
            "Const",
-           "GraphPlotter"]
+           "GraphPlotter",
+           "Point"]
