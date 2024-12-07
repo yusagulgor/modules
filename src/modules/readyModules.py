@@ -4,9 +4,10 @@
 2024y05m01d
 
 """
+
 from colorama import Fore
 from enum import Enum
-from typing import Any, List
+from typing import Any, List, final
 from .module import *
 
 # * ReadyWeb Modules
@@ -28,6 +29,7 @@ class Colour(Enum):
 
 # * very very basic your web site
 
+@final
 class RWebDev(Module):
 
     """ 
@@ -92,6 +94,7 @@ class RWebDev(Module):
 
 # * ReadyWeb Modules
 
+@final
 class ReadyWebs(RWebDev):
     def __init__(self,name:str,
                  yourModel:YourReadyWebModels,

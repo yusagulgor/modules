@@ -5,14 +5,17 @@
 
 """
 import os
-from typing import Any, Dict , Callable, List
+from typing import Any, Dict , Callable, Final, List, Protocol, final
 import numpy as np
 import matplotlib.pyplot as plt
-
+from pathlib import Path # not tested , you can have a error
+# from numba import njit
+# from numba import uint32 ,byte , float32
+# from numba.experimental import jitclass
 
 # * Base Modules
-
-class Module(object):
+@final
+class Module(Protocol):
     """
     Base Model
     ------------
@@ -25,11 +28,18 @@ class Module(object):
     def __repr__(self) -> str:
         return "model name :" + self.name    
 
+    def __init_subclass__(cls, **kwargs):
+        _allowed_subclasses = {"Gethub", "Decker","GEHUB","WebM","GraphPlotter","AutomationM","WD","RWebDev","ReadyWebs"}
+        if cls.__name__ not in _allowed_subclasses:
+            raise TypeError(f"{cls.__name__} sınıfı, AllowedBase sınıfını miras alamaz.")
+        super().__init_subclass__(**kwargs)    
+
 # * Gehub Modules  
 
 import os
 import subprocess
 
+@final
 class Gethub(Module):
     """
     # Usage
@@ -88,6 +98,7 @@ class Gethub(Module):
 
 # -----------------------------------------------------------------------
 
+@final
 class Decker(Module):
     def __init__(self, build: bool = False, image_name: str = "myapp:latest") -> None:
         super().__init__("Decker")
@@ -105,17 +116,21 @@ class Decker(Module):
 
 # -----------------------------------------------------------------------    
 
+@final
 class GEHUB(Module):
-    def __init__(self, github: Gethub, docker: Decker) -> None:
+    def __init__(self, github: Gethub=None, docker: Decker=None) -> None:
         super().__init__("Gehub")
         self.gh = github
         self.dk = docker
 
     def pushRepo(self):
+        """Pushes the repo with Docker build check."""
         try:
             if not self.dk.GetDW():
+                print("Git reposu başlatılıyor...")
                 self.gh.initialize_git_repo()
             else:
+                print("Docker görüntüsü oluşturuluyor...")
                 self.dk.build_image()
                 self.gh.initialize_git_repo()
             print("Git işlemleri tamamlandı.")
@@ -124,24 +139,34 @@ class GEHUB(Module):
 
     @staticmethod
     def fcodef(name: str):
+        """Generates a Python file with basic GitHub and Docker setup."""
+        content = (
+            "from modules import *\n\n"
+            "name = ''\n"
+            "projePath = r'C:\\example\\...' \n"
+            "repoPath = 'https://github.com/userName/example.git'\n"
+            "branchName = ''\n"
+            "commitMessage = 'first commit'\n"
+            "readmeText = ''\n\n"
+            "git = Gethub(name, projePath, repoPath, branchName, commitMessage, ReMDMessage=readmeText)\n"
+            "doc = Decker(False)\n"
+            "ghub = GEHUB(git, doc)\n"
+            "ghub.pushRepo()\n"
+        )
         try:
-            with open(name + ".py", 'w') as f:
-                f.write("from modules import *\n\n")
-                f.write("name = ''\n")
-                f.write("projePath = 'C:\\example\\...'\n")
-                f.write("repoPath = 'https://github.com/userName/example.git'\n")
-                f.write("branchName = ''\n")
-                f.write("commitMessage = 'first commit'\n")
-                f.write("readmeText = ''\n\n")
-                f.write("git = Gethub(name, projePath, repoPath, branchName, commitMessage, ReMDMessage=readmeText)\n")
-                f.write("doc = Decker(False)\n")
-                f.write("ghub = GEHUB(git, doc)\n")
-                f.write("ghub.pushRepo()\n")
+            with open(f"{name}.py", 'w') as f:
+                f.write(content)
+            print(f"{name}.py dosyası başarıyla oluşturuldu.")
         except Exception as e:
             print(f"{name}.py dosyası oluşturulurken hata: {e}")
-
-# * Var type/variable
  
+# * Var type/variable
+
+# specUint = [
+#     ("value",uint32)
+# ]
+
+# @jitclass(specUint)
 class UInt:
     def __init__(self, value: int):
         if value < 0:
@@ -153,10 +178,7 @@ class UInt:
         return self.value
 
     def __repr__(self):
-        return str(self.value)  
-
-    def __str__(self):
-        return str(self.value)  
+        return str(self.value)
 
     def is_valid(self):
         return self.value is not None
@@ -164,29 +186,29 @@ class UInt:
     def __add__(self, other):
         if isinstance(other, UInt) and self.is_valid() and other.is_valid():
             return UInt(self.value + other.value)
-        return UInt(-1)  
+        return UInt(-1)
 
     def __sub__(self, other):
         if isinstance(other, UInt) and self.is_valid() and other.is_valid():
             if self.value < other.value:
-                return UInt(-1)  
+                return UInt(-1)
             return UInt(self.value - other.value)
-        return UInt(-1) 
+        return UInt(-1)
 
     def __mul__(self, other):
         if isinstance(other, UInt) and self.is_valid() and other.is_valid():
             return UInt(self.value * other.value)
-        return UInt(-1)  
+        return UInt(-1)
 
     def __truediv__(self, other):
         if isinstance(other, UInt) and self.is_valid() and other.is_valid():
             if other.value == 0:
-                return UInt(-1)  
+                return UInt(-1)
             return UInt(self.value // other.value)
-        return UInt(-1)    
-    
+        return UInt(-1)
+
     def __eq__(self, other):
-        return self.value == other  
+        return self.value == other
 
     def __gt__(self, other):
         return self.value > other
@@ -200,6 +222,11 @@ class UInt:
     def __le__(self, other):
         return self.value <= other
 
+# specBin = [
+#     ('value',byte)
+# ]
+
+# @jitclass(specBin)
 class Bin:
     def __init__(self, value: int):
         if value not in (0, 1):
@@ -211,10 +238,7 @@ class Bin:
         return self.value
 
     def __repr__(self):
-        return str(self.value)  
-
-    def __str__(self):
-        return str(self.value)  
+        return str(self.value)
 
     def is_valid(self):
         return self.value is not None
@@ -222,23 +246,23 @@ class Bin:
     def __and__(self, other):
         if isinstance(other, Bin) and self.is_valid() and other.is_valid():
             return Bin(self.value & other.value)
-        return Bin(-1)  
+        return Bin(-1)
 
     def __or__(self, other):
         if isinstance(other, Bin) and self.is_valid() and other.is_valid():
             return Bin(self.value | other.value)
-        return Bin(-1)  
+        return Bin(-1)
 
     def __xor__(self, other):
         if isinstance(other, Bin) and self.is_valid() and other.is_valid():
             return Bin(self.value ^ other.value)
-        return Bin(-1) 
+        return Bin(-1)
 
     def __invert__(self):
         if self.is_valid():
-            return Bin(1 - self.value)  
-        return Bin(-1)    
-    
+            return Bin(1 - self.value)
+        return Bin(-1)
+
     def __eq__(self, other):
         return self.value == other
 
@@ -394,6 +418,7 @@ class Const(object,metaclass=MetaConst):
 
 from flask import Flask, render_template
 
+@final
 class WebM(Module):
 
     """
@@ -424,16 +449,36 @@ class WebM(Module):
 
 # * Graphplotter
 
+
+# specPoint = [
+#     ('x', float32),
+#     ('y', float32)
+# ]
+
+# @jitclass(specPoint)
 class Point:
     def __init__(self, x: float, y: float):
         self.x = x
         self.y = y
 
     def __call__(self):
-        return self.x,self.y
+        return self.x, self.y
 
-    def __repr__(self):
-        return f"Point({self.x}, {self.y})"
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __gt__(self, other):
+        return self.x > other.x and self.y > other.y
+
+    def __lt__(self, other):
+        return self.x < other.x and self.y < other.y
+
+    def __le__(self, other):
+        return self.x <= other.x and self.y <= other.y
+
+    def __ge__(self, other):
+        return self.x >= other.x and self.y >= other.y
+
     
 # Var.addType(Point)    
 
@@ -453,14 +498,15 @@ class VectorOperations:
         """İki vektörün iç çarpımını hesaplar."""
         return v1.x * v2.x + v1.y * v2.y
 
+@final
 class GraphPlotter(Module):
-    def __init__(self):
-        super().__init__("GraphPlotter")
-        self.vector_ops = VectorOperations()
-
     """
     For the 2/3D graph
     """
+
+    def __init__(self):
+        super().__init__("GraphPlotter")
+        self.vector_ops : Final[VectorOperations] = VectorOperations()
     
     def plot_2D(self, funcs: List[Callable[[int], float]]):
         """2D grafik için yalnızca 1 fonksiyon alınmalı."""

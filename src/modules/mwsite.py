@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from enum import StrEnum
+from typing import Protocol, final
 from flask import Flask, jsonify
 from .module import Module
 
@@ -22,7 +23,7 @@ class TextT(StrEnum):
     TITLE = "h3"
     LINK = "a"     
 
-class HE(ABC):
+class HE(Protocol):
     def __init__(self) -> None:pass
     @abstractmethod
     def to_dict(self):pass
@@ -118,6 +119,7 @@ import subprocess
 import time
 import os
 
+@final
 class WD(Module):
     def __init__(self, name: str, navbar: Navbar, footer: Footer, pages: list[Page]) -> None:
         super().__init__(name)

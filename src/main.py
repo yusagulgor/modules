@@ -10,7 +10,6 @@ from modules import *
 # * Modules
 
 
-
 # * GEHUB Modules
 
 # pPath = "C:\\Users\\unknow" # ? Ex
@@ -29,8 +28,8 @@ from modules import *
 # * WEB Modules
 # param = [("/","Testhome.html"),("/about","Testabout.html")]
 # webM = WebM("test",param)
-web = RWebDev("myWeb",Colour.GREEN,Colour.RED,["hi","sad","hola"],["hi Homun","sad,Doorun","hola Evin"])
-readyWeb = ReadyWebs("readyWeb",YourReadyWebModels.LoginRegister,web)
+# web = RWebDev("myWeb",Colour.GREEN,Colour.RED,["hi","sad","hola"],["hi Homun","sad,Doorun","hola Evin"])
+# readyWeb = ReadyWebs("readyWeb",YourReadyWebModels.LoginRegister,web)
 
 # * Automation Modules
 
@@ -42,5 +41,5 @@ if __name__ == "__main__":
     # ghub.pushRepo()
     # webM.run(debug=True)
     # web.run(debug=True)
-    readyWeb.run(debug=True)
-    # print(dif)
+    # readyWeb.run(debug=True)
+    print(dif)

@@ -1,8 +1,8 @@
 
 from modules import *
-import numpy as np
+# import numpy as np
 
-print(dif)
+# print(dif)
 
 """
 
@@ -31,7 +31,7 @@ Test aşaması . Çalışıyor mu diye deneniyor.
 #     return u + v
 
 
-plotter = GraphPlotter()
+# plotter = GraphPlotter()
 # dimension = int(input("Lütfen grafik boyutunu seçin (2D için 2, 3D için 3): "))
 # # * Ex usage
 # if dimension == 2:
@@ -41,18 +41,22 @@ plotter = GraphPlotter()
 # else:
 #     print("Geçersiz boyut seçimi.")
 
-point1 = Point(2, 3)
-point2 = Point(4, 1)
+# point1 = Point(2, 3)
+# point2 = Point(4, 1)
+
+# x1,y1 = point1()
+# print(f"x1 :{x1} , y1 :{y1}")
 
 # Vektör ekleme
-graph_plotter = GraphPlotter()
-graph_plotter.vector_addition(point1, point2)
+# graph_plotter = GraphPlotter()
+# graph_plotter.vector_addition(point1, point2)
 
 # Skaler çarpma
-graph_plotter.scalar_multiplication(point1, 3)
+# graph_plotter.scalar_multiplication(point1, 3)
 
 # İç çarpım
-graph_plotter.dot_product(point1, point2)
+# graph_plotter.dot_product(point1, point2)
+# print()
 
 # !ÇALIŞIYOR Const
 
@@ -64,3 +68,19 @@ graph_plotter.dot_product(point1, point2)
 
 # name = Constant().NAME # ?have TypeError 
 # print(name)
+
+# ! --------------------------------------------
+
+
+# GEHUB.fcodef("pytestfgh") #* Çalışıyor:D
+
+# * Ok
+# class IAT(Module):
+#     def __init__(self, name:str):
+#         super().__init__(name)
+
+#     def pi(self):
+#         return self.name
+
+# a = IAT("hite")
+# print(a.pi())
