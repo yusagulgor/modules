@@ -31,7 +31,8 @@ Dartpy :
 
 2. Activating the virtual env:
   ```bash
-  .\.venv\Scripts\Activate
+  python -m venv .venv
+  pip install -r requirements.txt
   ```
 
 3. And run this command for the start/test:

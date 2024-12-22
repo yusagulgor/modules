@@ -7,3 +7,4 @@ addTests/
 tests/
 any.py
 ownVarT.py
+.venv/
