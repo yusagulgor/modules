@@ -1,0 +1,6 @@
+
+Flask
+selenium
+matplotlib
+numpy
+requests

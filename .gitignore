@@ -1,0 +1,9 @@
+*.pyc
+node_modules
+__pycache__/
+models/
+templates/
+addTests/
+tests/
+any.py
+ownVarT.py
