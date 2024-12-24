@@ -4,6 +4,15 @@ from typing import Protocol, final
 from flask import Flask, jsonify
 from .module import Module
 
+__all__ = ["RCards", 
+           "Text", 
+           "TextT", 
+           "Card", 
+           "Colors", 
+           "Page", 
+           "Navbar", 
+           "Footer", 
+           "WD"]
 
 class Colors(StrEnum):
     RED = "red"
@@ -76,8 +85,6 @@ class Card(HE):
             "texts": [text.to_dict() for text in self.texts]
         }
 
-
-
 class Navbar(HE):
     def __init__(self, bgColor: Colors, links: list[Text]) -> None:
         super().__init__()
@@ -115,10 +122,6 @@ class Page(HE):
             "name": self.name,
             "elements": [element.to_dict() for element in self.elements]
         }
-
-import subprocess
-import time
-import os
 
 @final
 class WD(Module):
@@ -162,14 +165,3 @@ class WD(Module):
             with open(f"{nam}.html", "w") as f:
                 pages_html = "".join([repr(page) for page in self.pages])
                 f.write(f"{repr(self.navbar)}{pages_html}{repr(self.footer)}")
-
-
-__all__ = ["RCards", 
-           "Text", 
-           "TextT", 
-           "Card", 
-           "Colors", 
-           "Page", 
-           "Navbar", 
-           "Footer", 
-           "WD"]

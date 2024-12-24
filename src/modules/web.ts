@@ -16,7 +16,6 @@ interface WebData {
   port:number;
 }
 
-// Geçici bir kullanıcı veritabanı
 let users: { [username: string]: string } = {};
 
 const fetchData = () => {
@@ -54,11 +53,9 @@ const fetchData = () => {
   req.end();
 };
 
-// Express.js sunucusuna HTML içeriğini ve veriyi konsola yazdıran fonksiyon
 const sendHtmlToServer = (data: WebData) => {
   const app = express();
 
-  // Express.js sunucusunun çalıştığı port
   const port = 8001;
 
   // ! This code is for readyweb and webdev
@@ -130,7 +127,6 @@ const sendHtmlToServer = (data: WebData) => {
       });
     });
 
-    // Kullanıcı kayıt olma endpoint'i
     app.get('/register', (req, res) => {
       const username = req.query.username as string;
       const password = req.query.password as string;
@@ -138,7 +134,6 @@ const sendHtmlToServer = (data: WebData) => {
       res.send('Kullanıcı kaydedildi.');
     });
 
-    // Kullanıcı giriş endpoint'i
     app.get('/login', (req, res) => {
       const username = req.query.username as string;
       const password = req.query.password as string;
@@ -149,7 +144,6 @@ const sendHtmlToServer = (data: WebData) => {
       }
     });
 
-    // LoginRegister sayfası için HTML endpoint'i
     if (data["modelname"] === "LoginRegister") {
       const LRhtml = `
       <!DOCTYPE html>
@@ -263,7 +257,6 @@ const sendHtmlToServer = (data: WebData) => {
     }
   }
 
-  // Express.js sunucusunu başlat
   app.listen(port, () => {
     if (data["modelname"] === "LoginRegister") {
       console.log(`Server is running at http://127.0.0.1:8001/LoginRegister`);
@@ -274,5 +267,4 @@ const sendHtmlToServer = (data: WebData) => {
   });
 };
 
-// fetchData fonksiyonunu çağırarak verileri al
 fetchData();

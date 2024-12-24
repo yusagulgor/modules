@@ -8,6 +8,19 @@ from typing import Any, Dict , Callable, Final, List, Protocol, final
 import numpy as np
 import matplotlib.pyplot as plt
 
+__all__ = ["Module",
+           "WebM",
+           "AutomationM",
+           "Gethub",
+           "Decker",
+           "GEHUB",
+           "Bin",
+           "UInt",
+           "Var",
+           "Const",
+           "GraphPlotter",
+           "Point"]
+
 # * Base Modules
 @final
 class Module(Protocol):
@@ -38,60 +51,53 @@ import subprocess
 
 @final
 class Gethub(Module):
+    # ffpy da cargo run
+
     """
     # Usage
     Please click on the class and read the doc.
 
-    pPath must be like this: "x:\\examples\\..." The important thing here is to double \
-    backslashes.
+    !!! # Kullanmadan önce zaten github hesabında repo oluşturulmalı . 
 
-    rPath: GitHub repository URL.
+    !!! # Proje path kısmına çift slash koymayı unutma.
 
-    your_branchName: Git branch name.
+    proje_path must be like this: "x:\\examples\\..." The important thing here is to double \ backslashes.
 
-    commitMessage: First commit message.
+    Args:
+        proje_path (str): Proje dizin yolu.
+        repo_url (str): GitHub repository URL'si.
+        branch_name (str): Git dalı adı.
+        commit_message (str): Commit mesajı..
 
-    dwReMD: Indicates whether to create README.md.
-
-    ReMDMessage: Content of README.md.
     """
 
-    def __init__(self, pName: str, pPath: str, rPath: str, your_branchName: str, 
-                 commitMessage: str, dwReMD: bool = False, ReMDMessage: str = None) -> None:
+    def __init__(self, proje_path: str, repo_url: str, your_branchName: str, commitMessage: str) -> None:
         super().__init__("Gethub")
-        self.pName = pName
-        self.pPath = pPath
-        self.rPath = rPath
+        self.pPath = proje_path
+
+        self.rPath = repo_url
         self.y_bN = your_branchName
+
+        # print(f"dizin : {os.getcwd()}")  
+
+        if commitMessage.__len__() > 15:
+            raise ValueError("commit message cant be 16 and more.")
+
         self.cm = commitMessage
-        self.dwMD = dwReMD
-        self.mdMessage = ReMDMessage or self._default_readme()
 
-    def _default_readme(self):
-        return f"# {self.pName} project\n\nHello to my {self.pName}\n"
+    def run(self):
+        import ctypes
+        lib = ctypes.CDLL("src\\modules\\fgit.dll")
+        lib.push_to_github.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_char_p]
+        lib.push_to_github.restype = ctypes.c_char_p
 
-    def addRM(self):
-        if self.dwMD:
-            try:
-                with open(os.path.join(self.pPath, 'README.md'), 'w') as f:
-                    f.write(self.mdMessage)
-            except Exception as e:
-                print(f"README.md oluşturulurken hata: {e}")
+        encoded_path = self.pPath.encode("utf-8")
+        encoded_url = self.rPath.encode("utf-8")
+        encoded_branch = self.y_bN.encode("utf-8")
+        encoded_message = self.cm.encode("utf-8")
 
-    def initialize_git_repo(self):
-        try:
-            os.makedirs(self.pPath, exist_ok=True)
-            subprocess.run(f"git init {self.pPath}", check=True)
-            self.addRM()
-            subprocess.run(f"git -C {self.pPath} add .", check=True)
-            subprocess.run(f'git -C {self.pPath} commit -m "{self.cm}"', check=True)
-            subprocess.run(f"git -C {self.pPath} branch -M {self.y_bN}", check=True)
-            subprocess.run(f"git -C {self.pPath} remote add origin {self.rPath}", check=True)
-            subprocess.run(f"git -C {self.pPath} push -u origin {self.y_bN}", check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"Git işlemi başarısız oldu: {e}")
-        except Exception as e:
-            print(f"Bir hata oluştu: {e}")
+        result = lib.push_to_github(encoded_path, encoded_url, encoded_branch, encoded_message)
+        return ctypes.string_at(result).decode("utf-8")
 
 # -----------------------------------------------------------------------
 
@@ -125,11 +131,12 @@ class GEHUB(Module):
         try:
             if not self.dk.GetDW():
                 print("Git reposu başlatılıyor...")
-                self.gh.initialize_git_repo()
+                self.gh.run()
+                print("işlemler bitti.")
             else:
                 print("Docker görüntüsü oluşturuluyor...")
                 self.dk.build_image()
-                self.gh.initialize_git_repo()
+                self.gh.run()
             print("Git işlemleri tamamlandı.")
         except Exception as e:
             print(f"GEHUB işlemi sırasında hata: {e}")
@@ -642,16 +649,3 @@ class AutomationM(Module) :
             except :
                 continue          
 
-
-__all__ = ["Module",
-           "WebM",
-           "AutomationM",
-           "Gethub",
-           "Decker",
-           "GEHUB",
-           "Bin",
-           "UInt",
-           "Var",
-           "Const",
-           "GraphPlotter",
-           "Point"]

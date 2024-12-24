@@ -10,6 +10,11 @@ from enum import Enum
 from typing import Any, List, final
 from .module import *
 
+__all__ = ["Colour",
+           "YourReadyWebModels",
+           "RWebDev",
+           "ReadyWebs"]
+
 # * ReadyWeb Modules
 
 from flask import Flask, jsonify
@@ -108,8 +113,3 @@ class ReadyWebs(RWebDev):
         print(Fore.BLUE+f"After the statusCode: 200 \nServer is running at http://localhost:8001/{self.__modelname.value}")
         print(Fore.GREEN)
         super().run(debug,load_dotenv,self.__modelname,**options)        
-
-__all__ = ["Colour",
-           "YourReadyWebModels",
-           "RWebDev",
-           "ReadyWebs"]
